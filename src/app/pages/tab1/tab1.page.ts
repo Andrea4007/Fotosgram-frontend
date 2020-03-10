@@ -26,7 +26,7 @@ export class Tab1Page implements OnInit{
       this.posts.push(...resp.posts); //cada una de las entradas sera un elemento nuevo con el operador spred, creando coleccion de tdos los post que vienen ahi
     if( event ){
       event.target.complete();
-      if(resp.posts-length===0){
+      if(resp.posts.length===0){
       this.habilitado = false;
       }
 

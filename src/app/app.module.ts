@@ -12,10 +12,13 @@ import { AppComponent } from './app.component';
 //importando el recurso de http
 import { HttpClientModule } from '@angular/common/http';
 
+//importando modulo del ionic storage 
+import { IonicStorageModule } from '@ionic/storage' 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, HttpClientModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicStorageModule.forRoot(), HttpClientModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,
     SplashScreen,

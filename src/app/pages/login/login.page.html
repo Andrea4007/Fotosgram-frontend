@@ -1,11 +1,11 @@
 <ion-content>
 
-
-    <ion-slides class="mainSlide">
+    <!-- referencia local #slidePrincipal-->
+    <ion-slides class="mainSlide" #slidePrincipal>
 
         <ion-slide>
 
-            <form (ngSubmit)="login()">
+            <form (ngSubmit)="login(fLogin)" #fLogin="ngForm">
                 <ion-grid fixed>
 
                     <ion-row>
@@ -21,12 +21,12 @@
 
                                 <ion-item>
                                     <ion-label>Email</ion-label>
-                                    <ion-input name="email" type="email" required></ion-input>
+                                    <ion-input [(ngModel)]="loginUser.email" name="email" type="email" required></ion-input>
                                 </ion-item>
 
                                 <ion-item>
                                     <ion-label>Password</ion-label>
-                                    <ion-input name="password" type="password" required></ion-input>
+                                    <ion-input [(ngModel)]="loginUser.password" name="password" type="password" required></ion-input>
                                 </ion-item>
 
                             </ion-list>
@@ -55,21 +55,21 @@
 
                 <ion-row>
                     <ion-col>
-                        <h3>Seleccione Avatar</h3>
+                        <h3>Seleccione un Avatar</h3>
                     </ion-col>
                 </ion-row>
 
                 <ion-row>
                     <ion-col>
-                        <ion-slides>
-                            <ion-slide *ngFor="let avatar of [1,1,1,1,1,1,1]">
-                                <ion-img class="pick-avatar" src="/assets/avatars/av-1.png"></ion-img>
+                        <ion-slides [options]="avatarSlide">
+                            <ion-slide *ngFor="let avatar of avatars">
+                                <ion-img class="pick-avatar" src="/assets/avatars/{{ avatar.img }}" [ngClass]="{ 'pick-avatar-seleccionado': avatar.seleccionado }" (click)="seleccionarAvatar(avatar)"></ion-img>
                             </ion-slide>
                         </ion-slides>
                     </ion-col>
                 </ion-row>
 
-                <form>
+                <form (ngSubmit)="registro(fRegistro) " #fRegistro="ngForm">
                     <ion-row>
                         <ion-col>
 
@@ -77,17 +77,17 @@
 
                                 <ion-item>
                                     <ion-label>Email</ion-label>
-                                    <ion-input name="email" type="email" required></ion-input>
+                                    <ion-input name="email " type="email " required></ion-input>
                                 </ion-item>
 
                                 <ion-item>
                                     <ion-label>Nombre</ion-label>
-                                    <ion-input name="nombre" type="text" required></ion-input>
+                                    <ion-input name="nombre " type="text " required></ion-input>
                                 </ion-item>
 
                                 <ion-item>
                                     <ion-label>Password</ion-label>
-                                    <ion-input name="password" type="password" required></ion-input>
+                                    <ion-input name="password " type="password " required></ion-input>
                                 </ion-item>
 
                             </ion-list>
@@ -96,7 +96,7 @@
 
                     <ion-row>
                         <ion-col>
-                            <ion-button type="submit" color="tertiary" shape="round">
+                            <ion-button type="submit " color="tertiary " shape="round ">
                                 Crear usuario
                             </ion-button>
                         </ion-col>
@@ -122,13 +122,13 @@
         <ion-row>
 
             <ion-col>
-                <ion-button shape="round" expand="full" size="small" fill="outline" color="tertiary">
+                <ion-button (click)="ingresar()" shape="round " expand="full " size="small " fill="outline " color="tertiary ">
                     Ingresar
                 </ion-button>
             </ion-col>
 
             <ion-col>
-                <ion-button shape="round" expand="full" size="small" fill="outline" color="tertiary">
+                <ion-button (click)="mostrarLogin()" shape="round " expand="full " size="small " fill="outline " color="tertiary ">
                     Registrarme
                 </ion-button>
             </ion-col>
