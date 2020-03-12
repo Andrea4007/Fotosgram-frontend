@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { UsuarioGuard } from './guards/usuario.guard';
 
 const routes: Routes = [
   {
     path: 'main',
-    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
+   // canActivate: [ UsuarioGuard ] no se hara asi porq aqui ya es tarde para cargar la ruta //negando cualquier actividad que quiera entrat a la pagina del tabs
+    canLoad: [UsuarioGuard] //porq usamos el loadChildren por lazyload
   },
   {
     path: 'login',
