@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, NavController } from '@ionic/angular';
 import { UsuarioService } from '../../services/usuario.service';
+import { UiServiceService } from '../../services/ui-service.service';
+import { Usuario } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-login',
@@ -58,7 +60,16 @@ avatarSlide = {
     password: '12345678'
   };
 
-  constructor(private servicio:UsuarioService) { }
+  registerUser: Usuario = {
+    email: 'test',
+    password: '123456',
+    nombre: 'Test',
+    avatar: 'av-1.png'
+  };
+
+  constructor(private servicio:UsuarioService,
+              private navCtrl:NavController,
+              private uiService:UiServiceService) { }
 
   ngOnInit() {
     //bloqueando el movimiento del ion slide
@@ -80,19 +91,45 @@ avatarSlide = {
       this.slides.slideTo(1); 
       this.slides.lockSwipes(true);
     }
-  login(fLogin: NgForm){
+
+    async login(fLogin: NgForm){
     if(fLogin.invalid){
       return; // si el formulario es invalido no hara nada 
     }
+
     //obtener el token
-    this.servicio.login(this.loginUser.email, this.loginUser.password);
-    console.log(fLogin.valid); //solo para confirmar que tengta la data del formulario
-    console.log(this.loginUser);
+    const valido = await this.servicio.login(this.loginUser.email, this.loginUser.password); //usando el await quiere decir q estamos trabajando con el resultado de la promesa un true o un false
+    /* console.log(fLogin.valid); //solo para confirmar que tengta la data del formulario
+    console.log(this.loginUser); */
+    if(valido){
+      //navegar al tabs
+      this.navCtrl.navigateRoot('/main/tabs/tab1', { animated: true }); //esto redireccionara al tab1
+
+    }else{
+      //mostrar alerta de usuario y contraseña no correctos
+      this.uiService.presentAlert('Verifique su correo electronico o contraseña');
+
+
+    }
   }
 
 
-  registro(fRegistro: NgForm){
-    console.log(fRegistro.valid);
+  
+  async registro( fRegistro: NgForm ) {
+
+    if ( fRegistro.invalid ) { return; }
+
+    const valido = await this.servicio.registro( this.registerUser );
+
+    if ( valido ) {
+      // navegar al tabs
+      this.navCtrl.navigateRoot( '/main/tabs/tab1', { animated: true } );
+    } else {
+      // mostrar alerta de usuario y contraseña no correctos
+      this.uiService.presentAlert('Ese correo electrónico ya existe.');
+    }
+
+
   }
 
   seleccionarAvatar(avatar){
