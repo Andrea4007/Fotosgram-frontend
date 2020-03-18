@@ -25,10 +25,10 @@ export class UsuarioService {
     return new Promise(resolve=>{
         //esto hace la utenticacion y devuelve el token
     this.http.post(`${URL}/user/login`, data)
-    .subscribe(resp=>{ //aqui se obtiene el token
+    .subscribe( async resp=>{ //aqui se obtiene el token
       console.log(resp);
       if(resp['ok']){
-        this.guardarToken(resp['token']);
+        await this.guardarToken(resp['token']);
         resolve(true);
       }else{
         this.token=null;
@@ -44,10 +44,10 @@ export class UsuarioService {
 
     return new Promise(resolve=>{
       this.http.post(`${ URL }/user/create`, usuario)
-      .subscribe(resp =>{
+      .subscribe(async resp =>{
         console.log(resp);
         if(resp['ok']){
-          this.guardarToken(resp['token']);
+         await this.guardarToken(resp['token']);
           resolve(true);
         }else{
           this.token=null;
@@ -60,12 +60,22 @@ export class UsuarioService {
 
   }
 
+
+  logout(){
+    this.token=null;
+    this.usuario=null;
+    this.storage.clear();
+    //moviendo a usr a la pantalla del login
+    this.navCtrl.navigateRoot('/login', {animated: true});
+
+  }
   
 
   async guardarToken(token: string){ //async para que retorne una promesa
      this.token = token; //recive el token
     //lo almacena en el storage
     await this.storage.set('token', token);
+    await this.validaToken();
   }
 
 
@@ -99,4 +109,49 @@ export class UsuarioService {
   async cargarToken(){
      this.token = await this.storage.get('token') || null;
   }
+
+  //retorna la ifnroamcion del usuario si existe o no existe
+  getUsuario() {
+
+    if ( !this.usuario._id ) {
+      this.validaToken();
+    }
+
+    return { ...this.usuario };
+
+  }
+
+  //actualizar usuario con toda su informacion 
+
+
+  actualizarUsuario( usuario: Usuario ) {
+
+
+    const headers = new HttpHeaders({
+      'x-token': this.token
+    });
+
+
+    return new Promise( resolve => {
+
+      this.http.post(`${ URL }/user/update`, usuario, { headers })
+        .subscribe( resp => {
+
+          if ( resp['ok'] ) {
+            this.guardarToken( resp['token'] );
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+
+        });
+
+    });
+
+
+
+  }
+
+
+
 }

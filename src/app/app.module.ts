@@ -9,6 +9,15 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+//pluging para corroborar la transferencia de archivos
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+
+//camara
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+ 
+//geolocalizacion
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 //importando el recurso de http
 import { HttpClientModule } from '@angular/common/http';
 
@@ -21,7 +30,10 @@ import { IonicStorageModule } from '@ionic/storage'
   imports: [BrowserModule, IonicStorageModule.forRoot(), HttpClientModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,
+    Geolocation,
+    Camera,
     SplashScreen,
+    FileTransfer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

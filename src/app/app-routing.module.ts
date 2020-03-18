@@ -17,7 +17,7 @@ const routes: Routes = [
     //para que la redireccion sea principalmente a login
     path: '',
     pathMatch: 'full',
-    redirectTo: 'login'
+    redirectTo: 'main/tabs/tab1'
 
   }
 ];

@@ -16,6 +16,14 @@ export class Tab1Page implements OnInit{
   ngOnInit(){
     //llamando la informacion de mi servicio
   this.siguientes();
+
+  //aqui se hara una suscripcion estar al pendiente cada que se emita un nuevo post del tab2
+  this.servicio.nuevoPost.subscribe(post=>{
+    //se va a insertar primero en el arreglo de post en la primera posicion
+    this.posts.unshift(post);
+
+  });
+
   }
   siguientes(event?, pull: boolean = false){
 

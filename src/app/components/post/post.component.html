@@ -9,17 +9,32 @@
         </ion-label>
     </ion-item>
 
-    <ion-slides pager="true">
-        <!---Se debe de aplicar un ngif para ver si existe o no la imagen-->
-        <ion-slide class="image-slide" [style]="img1 | domSanitizer">
+    <ion-slides pager="true" *ngIf="post.imgs.length > 1">
+        <!--   Se debe de aplicar un ngif para ver si existe o no la imagen -->
+        <ion-slide *ngFor="let img of post.imgs" class="image-slide" [style]="(img | imagen: post.usuario._id) | domSanitizer">
         </ion-slide>
-        <ion-slide class="image-slide" [style]="img2 | domSanitizer">
+        <!--   <ion-slide class="image-slide" [style]="img2 | domSanitizer">
         </ion-slide>
         <ion-slide class="image-slide" [style]="img3 | domSanitizer">
         </ion-slide>
-
+ -->
+    </ion-slides>
+    <ion-slides *ngIf="post.imgs.length === 1" [options]="slideSoloOPTS">
+        <!--   Se debe de aplicar un ngif para ver si existe o no la imagen -->
+        <ion-slide class="image-slide" [style]="(post.imgs[0] | imagen: post.usuario._id) | domSanitizer">
+        </ion-slide>
+        <!--   <ion-slide class="image-slide" [style]="img2 | domSanitizer">
+          </ion-slide>
+          <ion-slide class="image-slide" [style]="img3 | domSanitizer">
+          </ion-slide>
+   -->
     </ion-slides>
     <!-- mapa -->
+    <app-mapa [cords]="post.cords" *ngIf="post.cords">
+
+    </app-mapa>
+
+
     <ion-item lines="none">
         <ion-icon slot="start" name="heart-outline"></ion-icon>
         <ion-icon slot="end" name="bookmark"></ion-icon>
